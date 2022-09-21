@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import argparse
+import datetime
 import logging
 import re
+from datetime import date
 from typing import Dict, Union
 
 import requests
 from bs4 import BeautifulSoup
+from dateutil.relativedelta import MO, relativedelta
 from requests_toolbelt import sessions
 
 ApiData = Dict[str, Union[str, int]]
@@ -86,15 +89,30 @@ def get_day(http: requests.Session, api_data: ApiData, year: int, month: int, da
     url = "api/cal/getDay"
     api_response = http.post(url, data=api_data)
     api_json = api_response.json()
+    alert_msg = api_json.get("alert_msg")
+    if alert_msg:
+        logging.info(f"Got alert message for {year}-{month}-{day}: {alert_msg}")
+
     soup = BeautifulSoup(api_json["body"], features="lxml")
     menu_tag = soup.find(attrs={"class": "menu-name"})
     if not menu_tag:
-        raise Exception("Could not find menu tag")
+        logging.debug(f"Missing menu tag in API Response: {api_json}")
+        return alert_msg or ""
     # This takes the second child, to skip the item_preface element
     # <span class=\"menu-name\"><span class=\"item_preface\">02-Pasta<\/span>
     # Macaroni and Cheese w\/ Sliced Cucumbers (on the side)<\/span>
     menu = menu_tag.contents[1].text.strip()  # type: ignore
     return menu
+
+
+def get_week(http: requests.Session, api_data: ApiData):
+    day = date.today()
+    if day.weekday != MO:
+        day = day + relativedelta(weekday=MO(-1))
+    for i in range(5):
+        menu = get_day(http, api_data, day.year, day.month, day.day)
+        print(f"Menu for {day.year}.{day.month}.{day.day}: {menu}")
+        day = day + datetime.timedelta(days=1)
 
 
 def main():
@@ -111,8 +129,7 @@ def main():
 
     session = create_session(args.customer_id)
     api_data = login(session, args.username, args.password)
-    menu = get_day(session, api_data, 2022, 9, 21)
-    print(f"Menu is: {menu}")
+    get_week(session, api_data)
 
 
 if __name__ == "__main__":
