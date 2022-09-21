@@ -35,7 +35,7 @@ def login(http: requests.Session, username: str, password: str) -> ApiData:
     if not token_tag:
         raise Exception("Could not find token tag!")
 
-    token = token_tag.get("value")
+    token = token_tag.get("value")  # type: ignore
     logging.debug(f"Token: {token}")
     logging.debug(f"Cookies: {http.cookies}")
 
@@ -93,7 +93,7 @@ def get_day(http: requests.Session, api_data: ApiData, year: int, month: int, da
     # This takes the second child, to skip the item_preface element
     # <span class=\"menu-name\"><span class=\"item_preface\">02-Pasta<\/span>
     # Macaroni and Cheese w\/ Sliced Cucumbers (on the side)<\/span>
-    menu = menu_tag.contents[1].text.strip()
+    menu = menu_tag.contents[1].text.strip()  # type: ignore
     return menu
 
 
