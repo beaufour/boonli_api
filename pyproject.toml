@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Tool to retrieve the chosen menus from Boonli"
 authors = ["Allan Beaufour <allan@beaufour.dk>"]
 readme = "README.md"
+license = "Apache-2.0"
 packages = [{ include = "boonli_menu" }]
+repository = "https://github.com/beaufour/boonli_menu"
 
 [tool.poetry.dependencies]
 python = "^3.7"
