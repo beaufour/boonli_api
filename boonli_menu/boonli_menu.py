@@ -142,7 +142,13 @@ def main():
     logging.basicConfig()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--customer_id", type=str, required=True, help="Boonli customer id")
+    parser.add_argument(
+        "-c",
+        "--customer_id",
+        type=str,
+        required=True,
+        help="Boonli customer id, ie the first part of the domain name you log in on",
+    )
     parser.add_argument("-u", "--username", type=str, required=True, help="Boonli username")
     parser.add_argument("-p", "--password", type=str, required=True, help="Boonli password")
     parser.add_argument("-v", "--verbose", action="store_true", help="Turns on verbose logging")
