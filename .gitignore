@@ -6,6 +6,8 @@
 /build/
 /dist/
 /.venv/
+.mypy_cache
+*__pycache__
 .pytest_cache
 .vscode/launch.json
-menu.ics
+requirements.txt
