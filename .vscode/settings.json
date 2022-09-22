@@ -1,13 +1,20 @@
 {
     "cSpell.words": [
         "Boonli",
+        "CALDESC",
+        "CALNAME",
         "cday",
         "csrftk",
         "dateutil",
+        "dtend",
+        "dtstart",
+        "ical",
+        "icalendar",
         "lxbat",
         "lxml",
         "mcid",
         "mcycle",
+        "prodid",
         "relativedelta",
         "toolbelt",
         "xbat"

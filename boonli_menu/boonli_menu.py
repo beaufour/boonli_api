@@ -8,6 +8,7 @@ from typing import Dict, Union
 import requests
 from bs4 import BeautifulSoup
 from dateutil.relativedelta import MO, relativedelta
+from icalendar import Calendar, Event
 from requests_toolbelt import sessions
 
 ApiData = Dict[str, Union[str, int]]
@@ -112,10 +113,29 @@ def get_week(http: requests.Session, api_data: ApiData):
     day = date.today()
     if day.weekday != MO:
         day = day + relativedelta(weekday=MO(-1))
+
+    cal = Calendar()
+    cal.add("prodid", "-//Boonli Menu//beaufour.dk//")
+    cal.add("version", "2.0")
+    cal.add("name", "Boonli Menu")
+    cal.add("X-WR-CALNAME", "Boonli Menu")
+    cal.add("X-WR-CALDESC", "Boonli Menu")
     for i in range(5):
         menu = get_day(http, api_data, day.year, day.month, day.day)
         print(f"Menu for {day.year}.{day.month}.{day.day}: {menu}")
+        event = Event()
+        date_str = f"{day.year}{day.month:02}{day.day:02}"
+        event["uid"] = date_str
+        # TODO: should do the ;DATE=VALUE thing here...
+        event["dtstart"] = date_str
+        event["summary"] = menu
         day = day + datetime.timedelta(days=1)
+        event["dtend"] = f"{day.year}{day.month:02}{day.day:02}"
+        event["organizer"] = "donotreply@beaufour.dk"
+        cal.add_component(event)
+    f = open("menu.ics", "wb")
+    f.write(cal.to_ical())
+    f.close()
 
 
 def main():
