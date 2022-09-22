@@ -4,8 +4,10 @@
         "cday",
         "csrftk",
         "dateutil",
+        "lxbat",
         "lxml",
         "mcid",
+        "mcycle",
         "relativedelta",
         "toolbelt",
         "xbat"

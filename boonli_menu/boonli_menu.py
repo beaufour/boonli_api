@@ -2,7 +2,6 @@
 import argparse
 import datetime
 import logging
-import re
 from datetime import date
 from typing import Dict, Union
 
@@ -53,28 +52,32 @@ def login(http: requests.Session, username: str, password: str) -> ApiData:
     logging.debug(f"Headers: {login_response.request.headers}")
     logging.debug(f"Cookies: {http.cookies}")
 
-    # The API key is set in a script tag that just contains the xbat = '...' stance
     soup = BeautifulSoup(login_response.text, features="lxml")
-    script_tags = soup.find_all("script")
-    api_re = re.compile(r".*xbat.*=.*'(.+)'.*;.*")
-    api_token = None
-    for script in script_tags:
-        match = api_re.match(script.text)
-        if match:
-            api_token = match.group(1)
-            break
-    if not api_token:
-        raise Exception("Couldn't find API key!")
+    api_token_tag = soup.find("input", attrs={"id": "lxbat"})
+    if not api_token_tag:
+        raise Exception("Couldn't find value for API token!")
+    api_token = str(api_token_tag.get("value"))  # type: ignore
+    sid_tag = soup.find("input", attrs={"name": "sid"})
+    if not sid_tag:
+        raise Exception("Couldn't find value for SID")
+    sid = int(sid_tag.get("value"))  # type: ignore
+    pid_tag = soup.find("input", attrs={"name": "pid"})
+    if not pid_tag:
+        raise Exception("Couldn't find value for PID")
+    pid = int(pid_tag.get("value"))  # type: ignore
+    cur_mcid_tag = soup.find("a", attrs={"class": "mcycle_button"})
+    if not cur_mcid_tag:
+        raise Exception("Couldn't find value for MCID")
+    cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore
+    logging.debug(f"Selecting for {cur_mcid_tag.text}")
 
-    logging.debug(f"API Key: {api_token}")
-
-    # TODO: Find out where these magic values come from
     data = {
         "api_token": api_token,
-        "pid": "187008",
-        "sid": 1,
-        "cur_mcid": 6,
+        "pid": pid,
+        "sid": sid,
+        "cur_mcid": cur_mcid,
     }
+    logging.debug(f"API Data: {data}")
     return data
 
 
