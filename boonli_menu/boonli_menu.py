@@ -14,7 +14,7 @@ from requests_toolbelt import sessions
 ApiData = Dict[str, Union[str, int]]
 
 
-def create_session(customer_id: str):
+def create_session(customer_id: str) -> requests.Session:
     base_url = f"https://{customer_id}.boonli.com/"
     http = sessions.BaseUrlSession(base_url=base_url)
     headers = {
@@ -109,7 +109,7 @@ def get_day(http: requests.Session, api_data: ApiData, year: int, month: int, da
     return menu
 
 
-def get_week(http: requests.Session, api_data: ApiData):
+def get_week(http: requests.Session, api_data: ApiData) -> None:
     day = date.today()
     if day.weekday != MO:
         day = day + relativedelta(weekday=MO(-1))
@@ -138,7 +138,7 @@ def get_week(http: requests.Session, api_data: ApiData):
     f.close()
 
 
-def main():
+def main() -> None:
     logging.basicConfig()
 
     parser = argparse.ArgumentParser()
