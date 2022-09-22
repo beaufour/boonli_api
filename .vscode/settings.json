@@ -8,6 +8,7 @@
         "dateutil",
         "dtend",
         "dtstart",
+        "gcloud",
         "ical",
         "icalendar",
         "lxbat",

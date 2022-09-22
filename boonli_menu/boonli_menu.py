@@ -109,7 +109,7 @@ def get_day(http: requests.Session, api_data: ApiData, year: int, month: int, da
     return menu
 
 
-def get_week(http: requests.Session, api_data: ApiData) -> None:
+def get_week(http: requests.Session, api_data: ApiData) -> str:
     day = date.today()
     if day.weekday != MO:
         day = day + relativedelta(weekday=MO(-1))
@@ -133,9 +133,7 @@ def get_week(http: requests.Session, api_data: ApiData) -> None:
         event["dtend"] = f"{day.year}{day.month:02}{day.day:02}"
         event["organizer"] = "donotreply@beaufour.dk"
         cal.add_component(event)
-    f = open("menu.ics", "wb")
-    f.write(cal.to_ical())
-    f.close()
+    return str(cal.to_ical())
 
 
 def main() -> None:
@@ -158,7 +156,7 @@ def main() -> None:
 
     session = create_session(args.customer_id)
     api_data = login(session, args.username, args.password)
-    get_week(session, api_data)
+    print(get_week(session, api_data))
 
 
 if __name__ == "__main__":
