@@ -1,16 +1,27 @@
 #!/usr/bin/env python
 import argparse
 import logging
+import sys
 from datetime import date, timedelta
-from typing import Dict, Union
+from typing import Dict, List, Union
+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
 
 import requests
 from bs4 import BeautifulSoup
 from dateutil.relativedelta import MO, relativedelta
-from icalendar import Calendar, Event
 from requests_toolbelt import sessions
 
 ApiData = Dict[str, Union[str, int]]
+
+
+class Menu(TypedDict):
+    "The menu for a given date"
+    menu: Union[str, None]
+    day: date
 
 
 def _create_session(customer_id: str) -> requests.Session:
@@ -138,33 +149,16 @@ class BoonliAPI:
         menu = menu_tag.contents[1].text.strip()  # type: ignore
         return menu
 
-    def get_week(self) -> str:
+    def get_range(self, start: date, count: int) -> List[Menu]:
         """
-        Returns the menu for the given week
+        Returns the menu from a `start` date and `count` days forward
         """
-        day = date.today()
-        if day.weekday != MO:
-            day = day + relativedelta(weekday=MO(-1))
-
-        cal = Calendar()
-        cal.add("prodid", "-//Boonli Menu//beaufour.dk//")
-        cal.add("version", "2.0")
-        cal.add("name", "Boonli Menu")
-        cal.add("X-WR-CALNAME", "Boonli Menu")
-        cal.add("X-WR-CALDESC", "Boonli Menu")
-        for i in range(5):
-            menu = self.get_day(day)
-            event = Event()
-            date_str = f"{day.year}{day.month:02}{day.day:02}"
-            event["uid"] = date_str
-            # TODO: should do the ;DATE=VALUE thing here...
-            event["dtstart"] = date_str
-            event["summary"] = menu
-            day = day + timedelta(days=1)
-            event["dtend"] = f"{day.year}{day.month:02}{day.day:02}"
-            event["organizer"] = "donotreply@beaufour.dk"
-            cal.add_component(event)
-        return str(cal.to_ical())
+        ret = []
+        for i in range(count):
+            menu = self.get_day(start)
+            ret.append(Menu(menu=menu, day=start))
+            start += timedelta(days=1)
+        return ret
 
 
 def main() -> None:
@@ -187,7 +181,10 @@ def main() -> None:
 
     api = BoonliAPI()
     api.login(args.customer_id, args.username, args.password)
-    print(api.get_week())
+    day = date.today()
+    if day.weekday != MO:
+        day = day + relativedelta(weekday=MO(-1))
+    print(api.get_range(day, 7))
 
 
 if __name__ == "__main__":
