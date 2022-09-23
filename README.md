@@ -1,12 +1,12 @@
-# Boonli Menu
+# Boonli API
 
-This tool allows you to retrieve the menus that were chosen in [Boonli](https://boonli.com).
+This API allows you to retrieve the menus that were chosen on [Boonli](https://boonli.com).
 
 ## Usage
 
 To get the menu information run:
 
-    > boonli_menu.py -c <customer_id> -u <username> -p <password>
+    > boonli_api/boonli_api.py -c <customer_id> -u <username> -p <password>
 
 Where `customer_id` is the first part of the domain name where you login, like `my_school` in `https://myschool.boonli.com`.
 
