@@ -1,8 +1,8 @@
-"""
-This is file Cloud Function loads
-"""
+"""This is file Cloud Function loads."""
 
+from base64 import b64decode
 from datetime import date, timedelta
+from urllib.parse import parse_qs
 
 import functions_framework
 from dateutil.relativedelta import MO, relativedelta
@@ -14,12 +14,35 @@ from boonli_api.utils import menus_to_ical
 
 @functions_framework.http
 def calendar(request: Request) -> Response:
+    """Returns three weeks worth of menus in icalendar format (last, current,
+    and next week)
+
+    The function takes `username`, `password` and `customer_id` as query params.
+
+    You can also pass them in through `id` with the query params as a base64
+    encoded UTF-8 string. This is terrible "security" but at least people don't
+    see your password directly if they look at your calendar list? Or see it in
+    a query log.
+
+    To create the id in Python:
+    > b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
     """
-    Returns three weeks worth of menus in icalendar format (last, current, and next week)
-    """
-    username = request.args.get("username")
-    password = request.args.get("password")
-    customer_id = request.args.get("customer_id")
+    id = request.args.get("id")
+    if id:
+        url_string = b64decode(id).decode("utf-8")
+        args_list = parse_qs(url_string)
+        args = {}
+        for arg in args_list.keys():
+            args[arg] = args_list[arg][0]
+    else:
+        args = request.args
+
+    print(args)
+
+    username = args.get("username")
+    password = args.get("password")
+    customer_id = args.get("customer_id")
+
     if not (username and password and customer_id):
         # TODO: be explicit about which one
         raise Exception("Missing a required parameter!")
