@@ -1,9 +1,9 @@
 # TODO
 
+* add badges to readme
+
 ## JIT fetching
 
-* create deploy script, including auto-generating requirements.txt
-* add versioning?
 * option to base64 encode
 * Show doc and form on invalid parameters
 * Cache results

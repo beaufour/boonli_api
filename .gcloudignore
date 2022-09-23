@@ -7,12 +7,14 @@
 .git
 .gitignore
 LICENSE
-requirements.txt
 .pre-commit-config.yaml
 pyproject.toml
 TODO.md
 NOTICE
 README.md
+deploy.sh
+cloud_functions.md
+.travis.yml
 setup.cfg
 poetry.lock
 .vscode*

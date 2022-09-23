@@ -9,6 +9,5 @@
 .mypy_cache
 *__pycache__
 .pytest_cache
-.vscode/launch.json
-requirements.txt
+.vscode
 .coverage
