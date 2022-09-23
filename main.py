@@ -37,8 +37,6 @@ def calendar(request: Request) -> Response:
     else:
         args = request.args
 
-    print(args)
-
     username = args.get("username")
     password = args.get("password")
     customer_id = args.get("customer_id")
