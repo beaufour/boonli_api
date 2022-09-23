@@ -49,9 +49,9 @@ def calendar(request: Request) -> Response:
     api.login(customer_id, username, password)
 
     day = date.today()
-    if day.weekday != MO:
+    if day.weekday() != MO:
         day = day + relativedelta(weekday=MO(-1))
-    day -= timedelta(days=-7)
+    day -= timedelta(days=7)
 
     # Get last week, this, and next (ie 21 days)
     menus = api.get_range(day, 21)

@@ -188,7 +188,7 @@ def main() -> None:
     api = BoonliAPI()
     api.login(args.customer_id, args.username, args.password)
     day = date.today()
-    if day.weekday != MO:
+    if day.weekday() != MO:
         day = day + relativedelta(weekday=MO(-1))
     print(api.get_range(day, 7))
 
