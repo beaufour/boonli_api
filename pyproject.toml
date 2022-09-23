@@ -19,6 +19,9 @@ icalendar = "^4.1.0"
 functions-framework = "^3.2.0"
 typing-extensions = { version = "~4.3.0", python = "<3.8" }
 
+[tool.poetry.extras]
+coverage = ["coverage", "python-coveralls"]
+
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 flake8 = "^4.0.1"

@@ -17,6 +17,7 @@
         "mcid",
         "mcycle",
         "prodid",
+        "pytest",
         "relativedelta",
         "toolbelt",
         "xbat"

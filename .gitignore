@@ -11,3 +11,4 @@
 .pytest_cache
 .vscode/launch.json
 requirements.txt
+.coverage
