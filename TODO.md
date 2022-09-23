@@ -2,10 +2,7 @@
 
 ## General
 
-* Rename to boonli_api
-* Make format a parameter ical vs text
-* Make into a class to hide requests object
-* Add docstrings
+* Separate icalendar format out to separate function
 * Add tests with mock requests object
 * Add coveralls to try it out
 

@@ -6,7 +6,7 @@ This is file Cloud Function loads
 
 from flask.wrappers import Request, Response
 
-from boonli_api.boonli_api import create_session, get_week, login
+from boonli_api.api import BoonliAPI
 
 
 @functions_framework.http
@@ -18,8 +18,8 @@ def calendar(request: Request) -> Response:
         # TODO: be explicit about which one
         raise Exception("Missing a required parameter!")
 
-    session = create_session(customer_id)
-    api_data = login(session, username, password)
-    menu = get_week(session, api_data)
+    api = BoonliAPI()
+    api.login(customer_id, username, password)
+    menu = api.get_week()
     headers = {"Content-Type": "text/calendar"}
     return Response(menu, headers=headers)

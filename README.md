@@ -6,7 +6,7 @@ This API allows you to retrieve the menus that were chosen on [Boonli](https://b
 
 To get the menu information run:
 
-    > boonli_api/boonli_api.py -c <customer_id> -u <username> -p <password>
+    > boonli_api/api.py -c <customer_id> -u <username> -p <password>
 
 Where `customer_id` is the first part of the domain name where you login, like `my_school` in `https://myschool.boonli.com`.
 
