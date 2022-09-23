@@ -1,0 +1,19 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore, with the addition of
+# "#!include" directives (which insert the entries of the given .gitignore-style
+# file at that point).
+#!include:.gitignore
+.gcloudignore
+.git
+.gitignore
+LICENSE
+requirements.txt
+.pre-commit-config.yaml
+pyproject.toml
+TODO.md
+NOTICE
+README.md
+setup.cfg
+poetry.lock
+.vscode*
+tests/*
