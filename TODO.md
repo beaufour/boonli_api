@@ -1,12 +1,9 @@
 # TODO
 
-## General
-
-* Add tests with mock requests object
-* Add coveralls to try it out
-
 ## JIT fetching
 
+* create deploy script, including auto-generating requirements.txt
+* add versioning?
 * option to base64 encode
 * Show doc and form on invalid parameters
 * Cache results

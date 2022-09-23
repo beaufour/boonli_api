@@ -1,0 +1,5 @@
+{
+    "body": "<div class=\"right-col-content\">\n    <div class=\"selected-date\">\n        <span>Friday<\/span>\n        <span>September 9, 2022<\/span>\n    <\/div>\n\n            <div class=\"empty_Calendar\">\n            <h3>No items available to order.<\/h3>\n        <\/div>\n    <\/div>\n\n<div class=\"button-box\">\n        <a href=\"#\" class=\"button hidden-btn\" title=\"ORDER\" id=\"builder_btn\">ORDER<\/a>\n<\/div>\n",
+    "cart_count": 0,
+    "alert_msg": "School is closed!"
+}

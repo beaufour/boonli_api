@@ -3,7 +3,7 @@ import argparse
 import logging
 import sys
 from datetime import date, timedelta
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union
 
 if sys.version_info >= (3, 8):
     from typing import TypedDict
@@ -42,6 +42,64 @@ def _create_session(customer_id: str) -> requests.Session:
     return http
 
 
+def _extract_csrf_token(text: str) -> str:
+    soup = BeautifulSoup(text, features="lxml")
+    token_tag = soup.find(attrs={"name": "csrftk"})
+    if not token_tag:
+        raise Exception("Could not find token tag!")
+
+    token = token_tag.get("value")  # type: ignore
+    return str(token)
+
+
+def _extract_api_data(text: str) -> ApiData:
+    soup = BeautifulSoup(text, features="lxml")
+    api_token_tag = soup.find("input", attrs={"id": "lxbat"})
+    if not api_token_tag:
+        raise Exception("Couldn't find value for API token!")
+    api_token = str(api_token_tag.get("value"))  # type: ignore
+    sid_tag = soup.find("input", attrs={"name": "sid"})
+    if not sid_tag:
+        raise Exception("Couldn't find value for SID")
+    sid = int(sid_tag.get("value"))  # type: ignore
+    pid_tag = soup.find("input", attrs={"name": "pid"})
+    if not pid_tag:
+        raise Exception("Couldn't find value for PID")
+    pid = int(pid_tag.get("value"))  # type: ignore
+    cur_mcid_tag = soup.find("a", attrs={"class": "mcycle_button"})
+    if not cur_mcid_tag:
+        raise Exception("Couldn't find value for MCID")
+    cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore
+    logging.debug(f"Selecting for {cur_mcid_tag.text}")
+
+    data: ApiData = {
+        "api_token": api_token,
+        "pid": pid,
+        "sid": sid,
+        "cur_mcid": cur_mcid,
+    }
+    return data
+
+
+def _extract_menu(json: Any) -> str:
+    alert_msg = json.get("alert_msg")
+    if alert_msg:
+        logging.info(f"Got alert message: {alert_msg}")
+    error = json.get("error")
+    if error:
+        raise Exception(f"Got an error from the API: {error}")
+
+    soup = BeautifulSoup(json["body"], features="lxml")
+    menu_tag = soup.find(attrs={"class": "menu-name"})
+    if not menu_tag:
+        logging.debug(f"Missing menu tag in API Response: {json}")
+        return alert_msg or ""
+    # This takes the second child, to skip the item_preface element
+    # <span class=\"menu-name\"><span class=\"item_preface\">02-Pasta<\/span>
+    # Macaroni and Cheese w\/ Sliced Cucumbers (on the side)<\/span>
+    return menu_tag.contents[1].text.strip()  # type: ignore
+
+
 class BoonliAPI:
     """
     The main API.
@@ -65,12 +123,7 @@ class BoonliAPI:
         url = "login"
         logging.debug(f"\n########## Login GET {url}")
         resp = self._session.get(url)
-        soup = BeautifulSoup(resp.text, features="lxml")
-        token_tag = soup.find(attrs={"name": "csrftk"})
-        if not token_tag:
-            raise Exception("Could not find token tag!")
-
-        token = token_tag.get("value")  # type: ignore
+        token = _extract_csrf_token(resp.text)
         logging.debug(f"Token: {token}")
         logging.debug(f"Cookies: {self._session.cookies}")
 
@@ -85,33 +138,8 @@ class BoonliAPI:
         logging.debug(f"Headers: {login_response.request.headers}")
         logging.debug(f"Cookies: {self._session.cookies}")
 
-        soup = BeautifulSoup(login_response.text, features="lxml")
-        api_token_tag = soup.find("input", attrs={"id": "lxbat"})
-        if not api_token_tag:
-            raise Exception("Couldn't find value for API token!")
-        api_token = str(api_token_tag.get("value"))  # type: ignore
-        sid_tag = soup.find("input", attrs={"name": "sid"})
-        if not sid_tag:
-            raise Exception("Couldn't find value for SID")
-        sid = int(sid_tag.get("value"))  # type: ignore
-        pid_tag = soup.find("input", attrs={"name": "pid"})
-        if not pid_tag:
-            raise Exception("Couldn't find value for PID")
-        pid = int(pid_tag.get("value"))  # type: ignore
-        cur_mcid_tag = soup.find("a", attrs={"class": "mcycle_button"})
-        if not cur_mcid_tag:
-            raise Exception("Couldn't find value for MCID")
-        cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore
-        logging.debug(f"Selecting for {cur_mcid_tag.text}")
-
-        data = {
-            "api_token": api_token,
-            "pid": pid,
-            "sid": sid,
-            "cur_mcid": cur_mcid,
-        }
-        logging.debug(f"API Data: {data}")
-        self._api_data = data
+        self._api_data = _extract_api_data(login_response.text)
+        logging.debug(f"API Data: {self._api_data}")
 
     def get_day(self, day: date) -> str:
         """
@@ -131,22 +159,7 @@ class BoonliAPI:
         url = "api/cal/getDay"
         api_response = self._session.post(url, data=data)
         api_json = api_response.json()
-        alert_msg = api_json.get("alert_msg")
-        if alert_msg:
-            logging.info(f"Got alert message for {day.isoformat()}: {alert_msg}")
-        error = api_json.get("error")
-        if error:
-            raise Exception(f"Got an error from the API: {error}")
-
-        soup = BeautifulSoup(api_json["body"], features="lxml")
-        menu_tag = soup.find(attrs={"class": "menu-name"})
-        if not menu_tag:
-            logging.debug(f"Missing menu tag in API Response: {api_json}")
-            return alert_msg or ""
-        # This takes the second child, to skip the item_preface element
-        # <span class=\"menu-name\"><span class=\"item_preface\">02-Pasta<\/span>
-        # Macaroni and Cheese w\/ Sliced Cucumbers (on the side)<\/span>
-        menu = menu_tag.contents[1].text.strip()  # type: ignore
+        menu = _extract_menu(api_json)
         return menu
 
     def get_range(self, start: date, count: int) -> List[Menu]:
