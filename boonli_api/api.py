@@ -25,9 +25,7 @@ class Menu(TypedDict):
 
 
 def _create_session(customer_id: str) -> requests.Session:
-    """
-    Creates a requests session with the base API url, headers, etc.
-    """
+    """Creates a requests session with the base API url, headers, etc."""
     base_url = f"https://{customer_id}.boonli.com/"
     http = sessions.BaseUrlSession(base_url=base_url)
     headers = {
@@ -101,19 +99,18 @@ def _extract_menu(json: Any) -> str:
 
 
 class BoonliAPI:
-    """
-    The main API.
+    """The main API.
 
-    Call :func:`~boonli.api.BoonliAPI.login` first, before using any other methods.
+    Call :func:`~boonli.api.BoonliAPI.login` first, before using any
+    other methods.
     """
 
     _session = None
     _api_data = None
 
     def login(self, customer_id: str, username: str, password: str) -> None:
-        """
-        Logs into the Boonli API and retrieves the API parameters used for doing API calls.
-        """
+        """Logs into the Boonli API and retrieves the API parameters used for
+        doing API calls."""
         if self._session or self._api_data:
             logging.warn("Already logged in")
             return
@@ -142,9 +139,7 @@ class BoonliAPI:
         logging.debug(f"API Data: {self._api_data}")
 
     def get_day(self, day: date) -> str:
-        """
-        Returns the menu for the given day
-        """
+        """Returns the menu for the given day."""
         if not self._api_data or not self._session:
             raise Exception("Not logged in")
 
@@ -163,9 +158,7 @@ class BoonliAPI:
         return menu
 
     def get_range(self, start: date, count: int) -> List[Menu]:
-        """
-        Returns the menu from a `start` date and `count` days forward
-        """
+        """Returns the menu from a `start` date and `count` days forward."""
         ret = []
         for i in range(count):
             menu = self.get_day(start)
