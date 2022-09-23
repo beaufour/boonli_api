@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "boonli-menu"
+name = "boonli-api"
 version = "0.1.0"
-description = "Tool to retrieve the chosen menus from Boonli"
+description = "API allowing you to fecth menus from boonli.com"
 authors = ["Allan Beaufour <allan@beaufour.dk>"]
 readme = "README.md"
 license = "Apache-2.0"
-packages = [{ include = "boonli_menu" }]
-repository = "https://github.com/beaufour/boonli_menu"
+packages = [{ include = "boonli_api" }]
+repository = "https://github.com/beaufour/boonli_api"
 
 [tool.poetry.dependencies]
 python = "^3.7"

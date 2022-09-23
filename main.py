@@ -6,7 +6,7 @@ This is file Cloud Function loads
 
 from flask.wrappers import Request, Response
 
-from boonli_menu.boonli_menu import create_session, get_week, login
+from boonli_api.boonli_api import create_session, get_week, login
 
 
 @functions_framework.http
