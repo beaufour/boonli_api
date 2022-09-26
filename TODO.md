@@ -1,10 +1,7 @@
 # TODO
 
-* add badges to readme
-
 ## JIT fetching
 
-* add sequence numbers to calendar events to help caching (daily?)
 * Show doc and form on invalid parameters
 * Or return better error messages on missing parameters
 * Cache results
