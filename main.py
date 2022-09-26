@@ -25,7 +25,7 @@ def calendar(request: Request) -> Response:
     a query log.
 
     To create the id in Python:
-    > b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
+    > from base64 import b64encode; b64encode(bytes('username=...&password=...&customer_id=...', 'UTF-8'))
     """
     id = request.args.get("id")
     if id:
@@ -49,12 +49,18 @@ def calendar(request: Request) -> Response:
     api.login(customer_id, username, password)
 
     day = date.today()
+    sequence_num = day.toordinal()
+
+    # Start listening menus from a Monday. List menus from last week and show
+    # 21 days from then
     if day.weekday() != MO:
         day = day + relativedelta(weekday=MO(-1))
     day -= timedelta(days=7)
-
-    # Get last week, this, and next (ie 21 days)
     menus = api.get_range(day, 21)
-    ical = menus_to_ical(menus, "beaufour.dk")
+
+    # we set the sequence number to the current day as a hack, because without
+    # storing anything we don't know if anything has changed. that way it
+    # monotonically increases at least.
+    ical = menus_to_ical(menus, "beaufour.dk", sequence_num=sequence_num)
     headers = {"Content-Type": "text/calendar"}
     return Response(ical, headers=headers)
