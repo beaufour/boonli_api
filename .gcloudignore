@@ -19,3 +19,4 @@ setup.cfg
 poetry.lock
 .vscode*
 tests/*
+terraform/*
