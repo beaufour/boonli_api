@@ -16,7 +16,7 @@ To enable a lot of debug logging you can add `-v`.
 
 ## Web API
 
-I have also created an API that can be deployed on Google Cloud Function that returns the menus as an iCalendar here: <https://github.com/beaufour/boonli_api>
+I have also created an API that can be deployed on Google Cloud Function that returns the menus as an iCalendar here: <https://github.com/beaufour/boonli_calendar>
 
 ## Notes
 
