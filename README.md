@@ -1,6 +1,6 @@
 # Boonli API
 
-[![Build Status](https://app.travis-ci.com/beaufour/boonli_api.svg?branch=main)](https://app.travis-ci.com/beaufour/boonli_api) [![Coverage Status](https://coveralls.io/repos/github/beaufour/boonli_api/badge.svg?branch=main)](https://coveralls.io/github/beaufour/boonli_api?branch=main)
+[![Build Status](https://app.travis-ci.com/beaufour/boonli_api.svg?branch=main)](https://app.travis-ci.com/beaufour/boonli_api) [![Coverage Status](https://coveralls.io/repos/github/beaufour/boonli_api/badge.svg?branch=main)](https://coveralls.io/github/beaufour/boonli_api?branch=main) [![PyPI version](https://badge.fury.io/py/boonli_api.svg)](https://badge.fury.io/py/boonli_api)
 
 This API allows you to retrieve the menus that were chosen on [Boonli](https://boonli.com).
 
