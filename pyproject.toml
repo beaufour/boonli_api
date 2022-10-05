@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "boonli-api"
-version = "0.1.0"
+version = "0.1.1"
 description = "API allowing you to fecth menus from boonli.com"
 authors = ["Allan Beaufour <allan@beaufour.dk>"]
 readme = "README.md"
