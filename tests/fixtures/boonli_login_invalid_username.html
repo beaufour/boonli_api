@@ -1,0 +1,171 @@
+<style>
+        h1.logo {
+            width: 334px !important;
+        }
+    </style>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <title>Dwight School | Login</title>
+
+    <!-- Fonts -->
+
+    <script src="https://use.typekit.net/fqa8nex.js"></script>
+
+    <script>try {
+            Typekit.load({async: true});
+        } catch (e) {
+        }</script>
+
+    <script src="https://use.typekit.net/rce0mzw.js"></script>
+
+    <script>try {
+            Typekit.load({async: true});
+        } catch (e) {
+        }</script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="https://dwight.boonli.com/boonli/css/jquery.fancybox.css">
+    <link rel="stylesheet" type="text/css" href="https://dwight.boonli.com/boonli/css/boonli.min.css"/>
+    <link rel="shortcut icon" href="https://dwight.boonli.com/boonli/images/favicon.ico"/>
+
+        <script type="text/javascript">
+        scrType = "desktop";
+        var win_width = window.innerWidth;
+        var win_height = window.innerHeight;
+        //alert(win_width + " x " + win_height);
+        function bookmark(url,title){
+            if (window.sidebar) {
+                // Firefox
+                if(typeof window.sidebar.addPanel == "function") {
+                    window.sidebar.addPanel(title, url,"");
+                }
+                else {
+                    alert('Press ctrl+D to bookmark (Command+D for macs) after you click Ok');
+                }
+            }
+            else if( window.external ) { // IE Favorite
+                if(window.ActiveXObject) {
+                    // IE
+                    window.external.AddFavorite( url, title);
+                }
+                else {
+                    // chrome
+                    alert('Press ctrl+D to bookmark (Command+D for macs) after you click Ok');
+                }
+            }
+            else if(window.opera && window.print) {
+                // opera
+                var e = document.createElement("a");
+                e.setAttribute("href", url);
+                e.setAttribute("title", title);
+                e.setAttribute("rel", "sidebar");
+                e.click();
+            }
+            else {
+                //safri
+                alert('Press ctrl+D to bookmark (Command+D for macs) after you click Ok'); }
+        }
+    </script>
+</head>
+
+<body>
+        <div class="pageWrap" style="background-image:url(https://dwight.boonli.com/boonli/images/loginbg3.png);">
+        <div class="pageWrap-overlay">
+
+                <style>
+        .login-welcome { font-size: 26px; margin-top: 20px;}
+    </style>
+    <nav class="top-navigation">
+                    <h1 class="logo"><a href="#" title="Dwight School"><img src="https://dwight.boonli.com/images/dwight/signin.png" alt="Dwight School"/></a></h1>
+                                <div class="login-welcome">Dwight School Online Ordering</div>
+            </nav><!--//top-navigation-->
+                            <div class="notice-wrap" style="display:none">
+            <div class="formBox important-notice">
+                <p class="mb-msg-header">IMPORTANT NOTE</p>
+                <p>The system<span style="font-weight:700;color: #83003f"> WILL BE CLOSED</span> and unavailable </p>
+                <p style="color: #83003f;font-weight:700">Saturday, October 1 from 11:00pm Pacific<br />thru<br />Sunday, October 2 at 1:00am Pacific</p>
+                <p>due to routine maintenance.</p>
+                <p>We do apologize for any inconvenience.</p>
+                <p> The Boonli Team </p>
+            </div>
+        </div>
+            <div class="loginInner-Wrap">
+                <div class="formBox">
+                    <form method="POST" action="https://dwight.boonli.com/login">
+                                                <input type="hidden" name="csrftk" value="2tWKuQjjfUAMj81ZGYUEuarU3hig03t39pHFDWyO">
+                        <div class="form-head login-head">
+                            <h2>Welcome</h2>
+                        </div>
+                                                <div class="error-box">
+                            <i class="altIcon"></i>
+                            Invalid username/password. Please try again.
+                        </div>
+                                                <div class="form-field-grop login-fields">
+                            <p><input type="username" placeholder="Username (case-sensitive)" id="username" name="username" value="allan@beaufour.dk" required autofocus /><label style="display: none" for="username">Enter your username (case-sensitive).</label></p>
+                            <p><input type="password" placeholder="Password (case-sensitive)" id="password" name="password"  required/><label style="display: none" for="password">Enter your password (case-sensitive).</label></p>
+                            <p><input type="submit" class="button" value="Sign In"/></p>
+                                                    </div>
+                        <div class="form-bottom-link">
+                            <p><a href="https://dwight.boonli.com/forgotpass" title="Forgot password?">Forgot your password?</a></p>
+                            <p><a href="https://dwight.boonli.com/forgotuname" title="Forgot username?">Forgot your username?</a></p>
+                            <p><a href="https://dwight.boonli.com/checkurl" title="I cannot find my account">I cannot find my account.</a></p>                            <p><br /></p>
+                            <p><a href="#" id="create_account_link" title="Click here to create a new account">Create an Account</a></p>
+                                                    </div>
+                                            </form>
+
+                    <div class="copyRight">
+                                                <p class="termsofuse"><a href="https://www.boonli.com/privacy-policy">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="https://www.boonli.com/terms-use">Terms of Use</a></p>
+                        <p>&copy;2022 Boonli, All Rights Reserved</p>
+                                            </div>
+
+                </div> <!--//formBox-->
+
+            </div><!--//inner-Wrap-->
+
+
+                <div id="create-account-msg" style="display: none"  class="modal-popup">
+            <div class="modal-popup-content">
+                <a class="close-modal" href="#" title="Close"><img src="https://dwight.boonli.com/boonli/images/icons/icon_x_grey.png" alt="Close"/></a>
+                <div class="text-align-center">
+                    <p id="leave-msg">Have you ordered before?<br />If so, you do not need to create a new account.<br /><a href="/login" style="color:#CD163F">Click here</a> to login.</p>
+                                            <p>NEW TO BOONLI? <a href="/register" style="color:#CD163F">Click here</a> to create your account</p>
+                                    </div>
+            </div>
+        </div>
+
+
+
+        </div><!--//pageWrap-overlay-->
+                <div class="login-footer-logo">
+            <span class="pow-by">Powered by</span><span class="by-logo">
+                    <a href="#"><img src="https://dwight.boonli.com/boonli/images/boonli_logo_small_powby_white.png" alt="Boonli" /></a>
+            </span>
+                    </div>
+                            <nav class="bottom-nav">
+                <a class="comodo-icon" href="https://ssl.comodo.com/ssl.php" title="This site is secure" target="ssl_sec"><i></i><span style="display:none">SSL Encryption by Comodo.</span></a>
+            </nav><!--//top-navigation-->
+
+    </div> <!--//pageWrap-->
+
+    <div id="app"></div>
+    <!-- jQuery (JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://dwight.boonli.com/boonli/js/boonli2.min.js"></script>
+        <script src="https://dwight.boonli.com/boonli/js/lg.min.js"></script>
+    <script src="https://dwight.boonli.com/boonli/js/jquery.fancybox.js"></script>
+
+</body>
+</html>

@@ -18,6 +18,24 @@ from requests_toolbelt import sessions
 ApiData = Dict[str, Union[str, int]]
 
 
+class ParseError(Exception):
+    """If we cannot parse the returned data."""
+
+    pass
+
+
+class LoginError(Exception):
+    """If we cannot login to the Boonli website."""
+
+    pass
+
+
+class APIError(Exception):
+    """If the Boonli website returns and error."""
+
+    pass
+
+
 class Menu(TypedDict):
     "The menu for a given date"
     menu: Union[str, None]
@@ -44,29 +62,33 @@ def _extract_csrf_token(text: str) -> str:
     soup = BeautifulSoup(text, features="lxml")
     token_tag = soup.find(attrs={"name": "csrftk"})
     if not token_tag:
-        raise Exception("Could not find token tag!")
+        raise ParseError("Could not find token tag!")
 
     token = token_tag.get("value")  # type: ignore
     return str(token)
 
 
 def _extract_api_data(text: str) -> ApiData:
+    if "Invalid username/password" in text:
+        # Man, this is an ugly way to detect that
+        raise LoginError("Wrong username/password")
+
     soup = BeautifulSoup(text, features="lxml")
     api_token_tag = soup.find("input", attrs={"id": "lxbat"})
     if not api_token_tag:
-        raise Exception("Couldn't find value for API token!")
+        raise ParseError("Couldn't find value for API token!")
     api_token = str(api_token_tag.get("value"))  # type: ignore
     sid_tag = soup.find("input", attrs={"name": "sid"})
     if not sid_tag:
-        raise Exception("Couldn't find value for SID")
+        raise ParseError("Couldn't find value for SID")
     sid = int(sid_tag.get("value"))  # type: ignore
     pid_tag = soup.find("input", attrs={"name": "pid"})
     if not pid_tag:
-        raise Exception("Couldn't find value for PID")
+        raise ParseError("Couldn't find value for PID")
     pid = int(pid_tag.get("value"))  # type: ignore
     cur_mcid_tag = soup.find("a", attrs={"class": "mcycle_button"})
     if not cur_mcid_tag:
-        raise Exception("Couldn't find value for MCID")
+        raise ParseError("Couldn't find value for MCID")
     cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore
     logging.debug(f"Selecting for {cur_mcid_tag.text}")
 
@@ -85,7 +107,10 @@ def _extract_menu(json: Any) -> str:
         logging.info(f"Got alert message: {alert_msg}")
     error = json.get("error")
     if error:
-        raise Exception(f"Got an error from the API: {error}")
+        if error == "unauthenticated":
+            raise LoginError("Unauthenticated")
+
+        raise APIError(f"Got an error from the API: {error}")
 
     soup = BeautifulSoup(json["body"], features="lxml")
     menu_tag = soup.find(attrs={"class": "menu-name"})

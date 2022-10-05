@@ -3,7 +3,14 @@ import pathlib
 from typing import Any
 
 import pytest
-from boonli_api.api import _extract_api_data, _extract_csrf_token, _extract_menu
+from boonli_api.api import (
+    APIError,
+    LoginError,
+    ParseError,
+    _extract_api_data,
+    _extract_csrf_token,
+    _extract_menu,
+)
 
 FIXTURE_DIR = pathlib.Path(__file__).parent.resolve() / "fixtures"
 
@@ -35,9 +42,12 @@ def test_extract_api_data() -> None:
         "cur_mcid": 6,
     }
 
-    with pytest.raises(Exception):
+    with pytest.raises(ParseError):
         # This is missing the mcid
         _extract_api_data(load_fixture("boonli_home_2.html"))
+
+    with pytest.raises(LoginError):
+        _extract_api_data(load_fixture("boonli_login_invalid_username.html"))
 
 
 def test_extract_menu() -> None:
@@ -48,5 +58,8 @@ def test_extract_menu() -> None:
         == "Macaroni and Cheese w/ Sliced Cucumbers (on the side)"
     )
 
-    with pytest.raises(Exception):
+    with pytest.raises(LoginError):
         _extract_menu(load_json_fixture("day_unauth.json"))
+
+    with pytest.raises(APIError):
+        _extract_menu(load_json_fixture("day_server_error.json"))
