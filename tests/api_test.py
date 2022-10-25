@@ -5,6 +5,7 @@ from typing import Any
 import pytest
 from boonli_api.api import (
     APIError,
+    BoonliAPI,
     LoginError,
     ParseError,
     _extract_api_data,
@@ -63,3 +64,9 @@ def test_extract_menu() -> None:
 
     with pytest.raises(APIError):
         _extract_menu(load_json_fixture("day_server_error.json"))
+
+
+def test_invalid_customer_id() -> None:
+    api = BoonliAPI()
+    with pytest.raises(LoginError):
+        api.login("Iamconvincedthisdoesnotexist", "username", "password")
