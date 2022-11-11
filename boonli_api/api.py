@@ -142,7 +142,7 @@ class BoonliAPI:
             resp = self._session.get(url)
         except requests.exceptions.ConnectionError as ex:
             logging.warning("Got error logging in: %s", ex)
-            raise LoginError("Cannot connect to Boonli. Customer ID invalid?")
+            raise LoginError("Cannot connect to Boonli. Customer ID invalid?") from ex
         token = _extract_csrf_token(resp.text)
         logging.debug("Token: %s", token)
         logging.debug("Cookies: %s", self._session.cookies)
