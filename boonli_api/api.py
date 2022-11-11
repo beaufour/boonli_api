@@ -183,7 +183,7 @@ class BoonliAPI:
     def get_range(self, start: date, count: int) -> List[Menu]:
         """Returns the menu from a `start` date and `count` days forward."""
         ret = []
-        for i in range(count):
+        for _ in range(count):
             menu = self.get_day(start)
             ret.append(Menu(menu=menu, day=start))
             start += timedelta(days=1)
