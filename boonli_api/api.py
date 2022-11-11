@@ -84,7 +84,7 @@ def _extract_api_data(text: str) -> ApiData:
     if not cur_mcid_tag:
         raise ParseError("Couldn't find value for MCID")
     cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore
-    logging.debug(f"Selecting for {cur_mcid_tag.text}")
+    logging.debug("Selecting for %s", cur_mcid_tag.text)
 
     data: ApiData = {
         "api_token": api_token,
@@ -98,7 +98,7 @@ def _extract_api_data(text: str) -> ApiData:
 def _extract_menu(json: Any) -> str:
     alert_msg = json.get("alert_msg")
     if alert_msg:
-        logging.info(f"Got alert message: {alert_msg}")
+        logging.info("Got alert message: %s", alert_msg)
     error = json.get("error")
     if error:
         if error == "unauthenticated":
@@ -109,7 +109,7 @@ def _extract_menu(json: Any) -> str:
     soup = BeautifulSoup(json["body"], features="lxml")
     menu_tag = soup.find(attrs={"class": "menu-name"})
     if not menu_tag:
-        logging.debug(f"Missing menu tag in API Response: {json}")
+        logging.debug("Missing menu tag in API Response: %s", json)
         return alert_msg or ""
     # This takes the second child, to skip the item_preface element
     # <span class=\"menu-name\"><span class=\"item_preface\">02-Pasta<\/span>
@@ -137,29 +137,29 @@ class BoonliAPI:
         self._session = _create_session(customer_id)
 
         url = "login"
-        logging.debug(f"\n########## Login GET {url}")
+        logging.debug("\n########## Login GET %s", url)
         try:
             resp = self._session.get(url)
         except requests.exceptions.ConnectionError as ex:
-            logging.warning(f"Got error logging in: {ex}")
+            logging.warning("Got error logging in: %s", ex)
             raise LoginError("Cannot connect to Boonli. Customer ID invalid?")
         token = _extract_csrf_token(resp.text)
-        logging.debug(f"Token: {token}")
-        logging.debug(f"Cookies: {self._session.cookies}")
+        logging.debug("Token: %s", token)
+        logging.debug("Cookies: %s", self._session.cookies)
 
-        logging.debug(f"\n########## Login POST {url}")
+        logging.debug("\n########## Login POST %s", url)
         data = {
             "username": username,
             "password": password,
             "csrftk": token,
         }
         login_response = self._session.post(url, data=data)
-        logging.debug(f"Login post: {login_response}")
-        logging.debug(f"Headers: {login_response.request.headers}")
-        logging.debug(f"Cookies: {self._session.cookies}")
+        logging.debug("Login post: %s", login_response)
+        logging.debug("Headers: %s", login_response.request.headers)
+        logging.debug("Cookies: %s", self._session.cookies)
 
         self._api_data = _extract_api_data(login_response.text)
-        logging.debug(f"API Data: {self._api_data}")
+        logging.debug("API Data: %s", self._api_data)
 
     def get_day(self, day: date) -> str:
         """Returns the menu for the given day."""
