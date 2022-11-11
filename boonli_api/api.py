@@ -21,19 +21,13 @@ ApiData = Dict[str, Union[str, int]]
 class ParseError(Exception):
     """If we cannot parse the returned data."""
 
-    pass
-
 
 class LoginError(Exception):
     """If we cannot login to the Boonli website."""
 
-    pass
-
 
 class APIError(Exception):
     """If the Boonli website returns and error."""
-
-    pass
 
 
 class Menu(TypedDict):
