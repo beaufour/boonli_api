@@ -131,7 +131,7 @@ class BoonliAPI:
         """Logs into the Boonli API and retrieves the API parameters used for
         doing API calls."""
         if self._session or self._api_data:
-            logging.warn("Already logged in")
+            logging.warning("Already logged in")
             return
 
         self._session = _create_session(customer_id)
