@@ -1,19 +1,21 @@
 #!/usr/bin/env python
+"""API main functionality."""
 import argparse
 import logging
 import sys
 from datetime import date, timedelta
 from typing import Any, Dict, List, Union
 
+import requests
+from bs4 import BeautifulSoup
+from dateutil.relativedelta import MO, relativedelta
+from requests_toolbelt import sessions
+
 if sys.version_info >= (3, 8):
     from typing import TypedDict
 else:
     from typing_extensions import TypedDict
 
-import requests
-from bs4 import BeautifulSoup
-from dateutil.relativedelta import MO, relativedelta
-from requests_toolbelt import sessions
 
 ApiData = Dict[str, Union[str, int]]
 
@@ -41,7 +43,8 @@ def _create_session(customer_id: str) -> requests.Session:
     base_url = f"https://{customer_id}.boonli.com/"
     http = sessions.BaseUrlSession(base_url=base_url)
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:86.0) Gecko/20100101 Firefox/86.0",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:86.0)"
+        "Gecko/20100101 Firefox/86.0",
         "Accept": "application/json, text/javascript, */*; q=0.01",
         "Accept-Language": "en-US,en;q=0.5",
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -191,6 +194,7 @@ class BoonliAPI:
 
 
 def main() -> None:
+    """main function."""
     logging.basicConfig()
 
     parser = argparse.ArgumentParser()

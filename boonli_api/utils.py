@@ -1,3 +1,4 @@
+"""Misc utility functions used by the API."""
 from datetime import timedelta
 from typing import List
 
