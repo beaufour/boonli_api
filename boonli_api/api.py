@@ -161,7 +161,8 @@ class BoonliAPI:
         logging.debug("Headers: %s", login_response.request.headers)
         logging.debug("Cookies: %s", self._session.cookies)
 
-        self._api_data = _extract_api_data(login_response.text)
+        home_response = self._session.get("home")
+        self._api_data = _extract_api_data(home_response.text)
         logging.debug("API Data: %s", self._api_data)
 
     def get_day(self, day: date) -> str:
