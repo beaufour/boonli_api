@@ -29,7 +29,7 @@ class LoginError(Exception):
 
 
 class APIError(Exception):
-    """If the Boonli website returns and error."""
+    """If the Boonli website returns an error."""
 
 
 class Menu(TypedDict):
