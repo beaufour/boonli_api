@@ -83,7 +83,17 @@ def _extract_api_data(text: str) -> ApiData:
     if not pid_tag:
         raise ParseError("Couldn't find value for PID")
     pid = int(pid_tag.get("value"))  # type: ignore
-    cur_mcid_tag = soup.find("a", attrs={"class": "mcycle_button"})
+
+    # It seems like the "cycles" overlap at least for the school I'm
+    # using. So it's showing both the old and the new cycle for the same month.
+    # I can't seem to find any metadata for the cycle, so just taking the
+    # newest cycle here, which is the last one listed in my case. This is
+    # bound to break or be wrong in other cases...
+    #
+    # Moreover, it will only show one cycle's menus, so if some weeks are in 1)
+    # and some in 2), it will not show a complete menu listing for that period.
+
+    cur_mcid_tag = soup.find_all("a", attrs={"class": "mcycle_button"})[-1]
     if not cur_mcid_tag:
         raise ParseError("Couldn't find value for MCID")
     cur_mcid = int(cur_mcid_tag.get("id"))  # type: ignore

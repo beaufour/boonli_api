@@ -79,3 +79,13 @@ def test_invalid_customer_id() -> None:
     api = BoonliAPI()
     with pytest.raises(LoginError):
         api.login("Iamconvincedthisdoesnotexist", "username", "password")
+
+
+def test_multiple_mctypes() -> None:
+    """Tests that we correctly handle multiple mc ids."""
+    assert _extract_api_data(load_fixture("boonli_home_3.html")) == {
+        "api_token": "8464B60E-2294-4248-9406-4AF01A676444",
+        "pid": 909456,
+        "sid": 1,
+        "cur_mcid": 12,
+    }
