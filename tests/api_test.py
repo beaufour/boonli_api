@@ -1,8 +1,10 @@
+"""Tests for the Boonli API."""
 import json
 import pathlib
-from typing import Any
+from typing import Any, Final
 
 import pytest
+
 from boonli_api.api import (
     APIError,
     BoonliAPI,
@@ -13,19 +15,22 @@ from boonli_api.api import (
     _extract_menu,
 )
 
-FIXTURE_DIR = pathlib.Path(__file__).parent.resolve() / "fixtures"
+FIXTURE_DIR: Final = pathlib.Path(__file__).parent.resolve() / "fixtures"
 
 
 def load_fixture(path: str) -> str:
-    f = open(FIXTURE_DIR / path, "r")
+    """Helper function to load test input file."""
+    f = open(FIXTURE_DIR / path, "r", encoding="utf-8")
     return f.read()
 
 
 def load_json_fixture(path: str) -> Any:
+    """Helper function to load test input file in JSON format."""
     return json.loads(load_fixture(path))
 
 
 def test_extract_csrf_token() -> None:
+    """Tests that we correctly get the CSRF token."""
     assert (
         _extract_csrf_token(load_fixture("boonli_login_1.html"))
         == "245EFF7C-BC24-463D-B6B1-CD34B1002DC5"
@@ -36,6 +41,7 @@ def test_extract_csrf_token() -> None:
 
 
 def test_extract_api_data() -> None:
+    """Tests that we correctly get critical API data from the html."""
     assert _extract_api_data(load_fixture("boonli_home_1.html")) == {
         "api_token": "7C8C2555-FD5F-4AA1-BD4F-43C48B44E425",
         "pid": 100001,
@@ -52,6 +58,7 @@ def test_extract_api_data() -> None:
 
 
 def test_extract_menu() -> None:
+    """Tests that we correctly get the menu from the "API"."""
     assert _extract_menu(load_json_fixture("day_no_menu.json")) == ""
     assert _extract_menu(load_json_fixture("day_no_menu_alert.json")) == "School is closed!"
     assert (
@@ -67,6 +74,8 @@ def test_extract_menu() -> None:
 
 
 def test_invalid_customer_id() -> None:
+    """Tests that we correctly handle invalid Boonli Customer IDs (ie urls
+    really)."""
     api = BoonliAPI()
     with pytest.raises(LoginError):
         api.login("Iamconvincedthisdoesnotexist", "username", "password")
