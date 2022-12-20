@@ -20,8 +20,8 @@ FIXTURE_DIR: Final = pathlib.Path(__file__).parent.resolve() / "fixtures"
 
 def load_fixture(path: str) -> str:
     """Helper function to load test input file."""
-    f = open(FIXTURE_DIR / path, "r", encoding="utf-8")
-    return f.read()
+    file_ = open(FIXTURE_DIR / path, "r", encoding="utf-8")
+    return file_.read()
 
 
 def load_json_fixture(path: str) -> Any:
