@@ -1,7 +1,7 @@
 """Tests for the Boonli API."""
 import json
 import pathlib
-from typing import Any, Final
+from typing import Any
 
 import pytest
 
@@ -15,7 +15,7 @@ from boonli_api.api import (
     _extract_menu,
 )
 
-FIXTURE_DIR: Final = pathlib.Path(__file__).parent.resolve() / "fixtures"
+FIXTURE_DIR = pathlib.Path(__file__).parent.resolve() / "fixtures"
 
 
 def load_fixture(path: str) -> str:
