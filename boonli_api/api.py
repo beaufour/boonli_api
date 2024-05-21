@@ -205,7 +205,7 @@ class BoonliAPI:
 
 
 def main() -> None:
-    """main function."""
+    """Main function."""
     logging.basicConfig()
 
     parser = argparse.ArgumentParser()

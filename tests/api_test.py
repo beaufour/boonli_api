@@ -1,4 +1,5 @@
 """Tests for the Boonli API."""
+
 import json
 import pathlib
 from typing import Any
