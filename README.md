@@ -1,6 +1,6 @@
 # Boonli API
 
-[![pre-commit](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml) [![pre-commit](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml) [![Coverage Status](https://coveralls.io/repos/github/beaufour/boonli_api/badge.svg?branch=main)](https://coveralls.io/github/beaufour/boonli_api?branch=main) [![PyPI version](https://badge.fury.io/py/boonli_api.svg)](https://badge.fury.io/py/boonli_api)
+[![pre-commit](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/beaufour/boonli_api/actions/workflows/pre-commit.yml) [![Coverage Status](https://coveralls.io/repos/github/beaufour/boonli_api/badge.svg?branch=main)](https://coveralls.io/github/beaufour/boonli_api?branch=main) [![PyPI version](https://badge.fury.io/py/boonli_api.svg)](https://badge.fury.io/py/boonli_api)
 
 This API allows you to retrieve the menus that were chosen on [Boonli](https://boonli.com).
 
